@@ -33,70 +33,83 @@
                     }
                 })
             });
-            // Map and projection (geoMercator)
-            var projection = d3.geoMercator()
-                .center([103.851959, 1.290270])
-                .fitExtent([[20, 20], [980, 580]], data[0]);
+           // Map and projection
+    var projection = d3
+      .geoMercator()
+      .center([103.851959, 1.29027])
+      .fitExtent(
+        [
+          [20, 20],
+          [980, 580],
+        ],
+        data[0]
+      );
 
-            let geopath = d3.geoPath().projection(projection);
+    let geopath = d3.geoPath().projection(projection);
 
-            var colorScale = d3.scaleLinear()
-                .domain([0, 64000])
-                .range(["#fff", "#0d152d"]);
+    // Set up colorscale
+    let colorScale = d3
+      .scaleOrdinal()
+      .domain([0, 64000])
+      .range(d3.schemeOrRd[0,9]);
 
-            var legend = d3.legendColor()
-                .scale(colorScale)
-                .labelFormat(d3.format(".0f"))
-                .shapeWidth(40)
-                .cells([0,8000,16000,24000,32000,40000,48000,56000,64000])
-                .orient('horizontal')
-                .title("Population");
+    let legendColor = d3
+      .scaleOrdinal()
+      .domain([0, 8000, 16000, 24000, 32000, 40000, 48000, 56000, 64000])
+      .range(d3.schemeOrRd[9]);
 
-            svg.append("path")
-                .datum({ type: "Sphere" })
-                .attr("id", "area")
-                .attr("d", geopath)
-                .attr("fill", "#cccccc");
+    // Legend
+    var legend = d3
+      .legendColor()
+      .scale(legendColor)
+      .shapeWidth(40)
+    //   .cells([0, 8000, 16000, 24000, 32000, 40000, 48000, 56000, 64000])
+      .orient("horizontal")
+      .title("Population");
 
-            svg.append("g")
-                .attr("id", "districts")
-                .selectAll("path")
-                .data(data[0].features)
-                .enter()
-                .append("path")
-                .attr("d", geopath)
-                .attr("fill", d => colorScale(population_data[d.properties.Name.toUpperCase()]))
-                .attr("stroke", "#fff")
-                .attr("stroke-width", 0.5)
-                .on("mouseover", (event, d) => {
-                    d3.select(".tooltip")
-                        .html("<h4>" + d.properties.Name + "</h4>" + "Population: " + population_data[d.properties.Name.toUpperCase()])
-                        .style("position", "absolute")
-                        .style("background", "#fff")
-                        .style("border", "solid")
-                        .style("border-width", "1px")
-                        .style("border-radius", "5px")
-                        .style("opacity", 1)
-                        .style("padding", "10px")
-                        .style("left", 1200 + "px")
-                        .style("top", 600 + "px")
+    svg
+      .append("g")
+      .attr("transform", "translate(700,500)")
+      .style("font-size", "10px")
+      .call(legend);
 
-                    let path = d3.select(event.currentTarget)
-                    path.style("stroke", "orange").style("stroke-width", 2);
-                })
-                .on("mouseout", (event, d) => {
-                    d3.select(".tooltip")
-                        .text("")
-                        .style("opacity", 0);
+    svg
+      .append("g")
+      .attr("id", "districts")
+      .selectAll("path")
+      .data(data[0].features)
+      .enter()
+      .append("path")
+      .attr("d", geopath)
+      .attr("fill", (d) =>
+        colorScale(populationData[d.properties.Name.toUpperCase()])
+      )
+      .attr("stroke", "black")
+      .attr("stroke-width", 1)
+      .on("mouseover", (event, d) => {
+        d3.select(".tooltip")
+          // .text(d.properties.Name + "Population: " + populationData[d.properties.Name.toUpperCase()])
+          // .style("position", "absolute")
+          // .style("background", "#fff")
+          // .style("left", (event.pageX) + "px")
+          // .style("right", (event.pageY) + "px");
+          .html(
+            "<h4>" +
+              d.properties.Name +
+              "</h4>" +
+              "Population: " +
+              populationData[d.properties.Name.toUpperCase()]
+          );
 
-                    let path = d3.select(event.currentTarget)
-                    path.style("stroke", "#fff").style("stroke-width", 0.5);
-                })
+        let path = d3.select(event.currentTarget);
+        path.style("stroke", "red").style("stroke-width", 3);
+      })
+      .on("mouseout", (event, d) => {
+        d3.select(".tooltip").text("");
 
-            svg.append("g")
-                .attr("transform", "translate(10,530)")
-                .style("font-size", "10px")
-                .call(legend)
+        let path = d3.select(event.currentTarget);
+        path.style("stroke", "black").style("stroke-width", 1);
+      });
         })
 
     </script>
