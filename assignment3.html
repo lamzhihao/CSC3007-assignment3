@@ -23,17 +23,17 @@
         let svg = d3.select("svg")
             .attr("viewBox", "0 0 " + width + " " + height)
 
-        // Load external data
+
         Promise.all([d3.json("data/sgmap.json"), d3.csv("data/population2021.csv")]).then(data => {
             population_data = []
             data[0].features.forEach(element => {
                 data[1].forEach(element1 => {
-                    if (element.properties.Name.toLowerCase() == element1.Subzone.toLowerCase()) {
+                    if (element.properties.Name.toUpperCase() == element1.Subzone.toUpperCase()) {
                         population_data[element.properties.Name] = element1.Population
                     }
                 })
             });
-           // Map and projection
+
     var projection = d3
       .geoMercator()
       .center([103.851959, 1.29027])
@@ -47,7 +47,6 @@
 
     let geopath = d3.geoPath().projection(projection);
 
-    // Set up colorscale
     let colorScale = d3
       .scaleOrdinal()
       .domain([0, 64000])
@@ -57,13 +56,11 @@
       .scaleOrdinal()
       .domain([0, 8000, 16000, 24000, 32000, 40000, 48000, 56000, 64000])
       .range(d3.schemeOrRd[9]);
-
-    // Legend
+    
     var legend = d3
       .legendColor()
       .scale(legendColor)
       .shapeWidth(40)
-    //   .cells([0, 8000, 16000, 24000, 32000, 40000, 48000, 56000, 64000])
       .orient("horizontal")
       .title("Population");
 
@@ -88,11 +85,6 @@
       .attr("stroke-width", 1)
       .on("mouseover", (event, d) => {
         d3.select(".tooltip")
-          // .text(d.properties.Name + "Population: " + populationData[d.properties.Name.toUpperCase()])
-          // .style("position", "absolute")
-          // .style("background", "#fff")
-          // .style("left", (event.pageX) + "px")
-          // .style("right", (event.pageY) + "px");
           .html(
             "<h4>" +
               d.properties.Name +
