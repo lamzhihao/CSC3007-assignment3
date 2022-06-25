@@ -27,9 +27,9 @@
         Promise.all([d3.json("data/sgmap.json"), d3.csv("data/population2021.csv")]).then(data => {
             population_data = []
             data[0].features.forEach(element => {
-                data[1].forEach(element2 => {
-                    if (element.properties.Name.toLowerCase() == element2.Subzone.toLowerCase()) {
-                        population_data[element.properties.Name] = element2.Population
+                data[1].forEach(element1 => {
+                    if (element.properties.Name.toLowerCase() == element1.Subzone.toLowerCase()) {
+                        population_data[element.properties.Name] = element1.Population
                     }
                 })
             });
