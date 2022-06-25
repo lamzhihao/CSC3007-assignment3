@@ -50,12 +50,12 @@
     let colorScale = d3
       .scaleOrdinal()
       .domain([0, 64000])
-      .range(["##BFD7ED", "#60A3D9", "#0074B7", "#003B73", "#C6F2F4", "#7CC0D4", "#5DBDD3", "#174A6D", "#050A30"]);
+      .range(["#FFFFFF", "#C6F2F4", "#7CC0D4", "#5DBDD3", "#60A3D9", "#0074B7", "#003B73", "#174A6D", "#050A30"]);
 
     let legendColor = d3
       .scaleOrdinal()
       .domain([0, 8000, 16000, 24000, 32000, 40000, 48000, 56000, 64000])
-      .range(["##BFD7ED", "#60A3D9", "#0074B7", "#003B73", "#C6F2F4", "#7CC0D4", "#5DBDD3", "#174A6D", "#050A30"]);
+      .range(["#FFFFFF", "#C6F2F4", "#7CC0D4", "#5DBDD3", "#60A3D9", "#0074B7", "#003B73", "#174A6D", "#050A30"]);
     
     var legend = d3
       .legendColor()
