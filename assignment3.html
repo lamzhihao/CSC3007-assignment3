@@ -82,7 +82,7 @@
       .append("path")
       .attr("d", geopath)
       .attr("fill", (d) =>
-        colorScale(populationData[d.properties.Name.toUpperCase()])
+        colorScale(population_data[d.properties.Name.toUpperCase()])
       )
       .attr("stroke", "black")
       .attr("stroke-width", 1)
@@ -98,7 +98,7 @@
               d.properties.Name +
               "</h4>" +
               "Population: " +
-              populationData[d.properties.Name.toUpperCase()]
+              population_data[d.properties.Name.toUpperCase()]
           );
 
         let path = d3.select(event.currentTarget);
