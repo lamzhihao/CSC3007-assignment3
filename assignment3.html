@@ -70,39 +70,71 @@
       .style("font-size", "10px")
       .call(legend);
 
-    svg
-      .append("g")
-      .attr("id", "districts")
-      .selectAll("path")
-      .data(data[0].features)
-      .enter()
-      .append("path")
-      .attr("d", geopath)
-      .attr("fill", (d) =>
-        colorScale(population_data[d.properties.Name.toUpperCase()])
-      )
-      .attr("stroke", "black")
-      .attr("stroke-width", 1)
-      .on("mouseover", (event, d) => {
-        d3.select(".tooltip")
-          .html(
-            "<h4>" +
-              d.properties.Name +
-              "</h4>" +
-              "Population: " +
-              population_data[d.properties.Name.toUpperCase()]
-          );
+    // svg
+    //   .append("g")
+    //   .attr("id", "districts")
+    //   .selectAll("path")
+    //   .data(data[0].features)
+    //   .enter()
+    //   .append("path")
+    //   .attr("d", geopath)
+    //   .attr("fill", (d) =>
+    //     colorScale(population_data[d.properties.Name.toUpperCase()])
+    //   )
+    //   .attr("stroke", "black")
+    //   .attr("stroke-width", 1)
+    //   .on("mouseover", (event, d) => {
+    //     d3.select(".tooltip")
+    //       .html(
+    //         "<h4>" +
+    //           d.properties.Name +
+    //           "</h4>" +
+    //           "Population: " +
+    //           population_data[d.properties.Name.toUpperCase()]
+    //       );
 
-        let path = d3.select(event.currentTarget);
-        path.style("stroke", "red").style("stroke-width", 3);
-      })
-      .on("mouseout", (event, d) => {
-        d3.select(".tooltip").text("");
+    //     let path = d3.select(event.currentTarget);
+    //     path.style("stroke", "red").style("stroke-width", 3);
+    //   })
+    //   .on("mouseout", (event, d) => {
+    //     d3.select(".tooltip").text("");
 
-        let path = d3.select(event.currentTarget);
-        path.style("stroke", "black").style("stroke-width", 1);
-      });
+    //     let path = d3.select(event.currentTarget);
+    //     path.style("stroke", "black").style("stroke-width", 1);
+    //   });
+
+    svg.append("g")
+        .attr("id", "districts")
+        .selectAll("path")
+        .data(data[0].features)
+        .enter()
+        .append("path")
+        .attr("d", geopath)
+        .attr("fill", d => colorScale(population_data[d.properties.Name.toUpperCase()]))
+        .on("mouseover", (event, d) => {
+            d3.select(".tooltip")
+                .html("<h6>" + d.properties.Name + "</h6>" + "Population: " + population_data[d.properties.Name])
+                .style("position", "absolute")
+                .style("background", "#fff")
+                .style("left", (event.pageX) + "px")
+                .style("top", (event.pageY) + "px")
+                .style("border", "solid")
+                .style("border-width", "1px")
+                .style("border-radius", "10px")
+                .style("opacity", 1)
+
+            let path = d3.select(event.currentTarget)
+            path.style("stroke", "red").style("stroke-width", 2);
         })
+        .on("mouseout", (event, d) => {
+            d3.select(".tooltip")
+                .text("")
+                .style("opacity", 0);
+
+            let path = d3.select(event.currentTarget)
+            path.style("stroke", "gold").style("stroke-width", 0.5);
+        })
+      });
 
     </script>
 
